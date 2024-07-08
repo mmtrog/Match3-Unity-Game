@@ -10,7 +10,7 @@ public class Utils
     public static NormalItem.eNormalType GetRandomNormalType()
     {
         Array values = Enum.GetValues(typeof(NormalItem.eNormalType));
-        NormalItem.eNormalType result = (NormalItem.eNormalType)values.GetValue(URandom.Range(0, values.Length));
+        NormalItem.eNormalType result = (NormalItem.eNormalType)values.GetValue(URandom.Range(0, values.Length - 1));
 
         return result;
     }
@@ -19,9 +19,11 @@ public class Utils
     {
         List<NormalItem.eNormalType> list = Enum.GetValues(typeof(NormalItem.eNormalType)).Cast<NormalItem.eNormalType>().Except(types).ToList();
 
+        if (list.Contains(NormalItem.eNormalType.NO_TYPE)) list.Remove(NormalItem.eNormalType.NO_TYPE);
+        
         int rnd = URandom.Range(0, list.Count);
         NormalItem.eNormalType result = list[rnd];
-
+        
         return result;
     }
 }

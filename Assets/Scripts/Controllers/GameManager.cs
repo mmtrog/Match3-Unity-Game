@@ -115,6 +115,8 @@ public class GameManager : MonoBehaviour
             Destroy(m_boardController.gameObject);
             m_boardController = null;
         }
+        
+        PoolManager.Instance.ClearPool();
     }
 
     private IEnumerator WaitBoardController()

@@ -9,22 +9,10 @@ public class Item
 {
     public Cell Cell { get; private set; }
 
-    public Transform View { get; private set; }
+    public ItemView View { get; protected set; }
 
 
-    public virtual void SetView()
-    {
-        string prefabname = GetPrefabName();
-
-        if (!string.IsNullOrEmpty(prefabname))
-        {
-            GameObject prefab = Resources.Load<GameObject>(prefabname);
-            if (prefab)
-            {
-                View = GameObject.Instantiate(prefab).transform;
-            }
-        }
-    }
+    public virtual void SetView() { }
 
     protected virtual string GetPrefabName() { return string.Empty; }
 
@@ -37,14 +25,14 @@ public class Item
     {
         if (View == null) return;
 
-        View.DOMove(Cell.transform.position, 0.2f);
+        View.Transform.DOMove(Cell.transform.position, 0.2f);
     }
 
     public void SetViewPosition(Vector3 pos)
     {
-        if (View)
+        if (View != null)
         {
-            View.position = pos;
+            View.Transform.position = pos;
         }
     }
 
@@ -52,7 +40,7 @@ public class Item
     {
         if (View)
         {
-            View.SetParent(root);
+            View.Transform.SetParent(root);
         }
     }
 
@@ -60,11 +48,13 @@ public class Item
     {
         if (View == null) return;
 
-        SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
-        if (sp)
-        {
-            sp.sortingOrder = 1;
-        }
+        // SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
+        // if (sp)
+        // {
+        //     sp.sortingOrder = 1;
+        // }
+
+        View.SpriteRenderer.sortingOrder = 1;
     }
 
 
@@ -72,21 +62,22 @@ public class Item
     {
         if (View == null) return;
 
-        SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
-        if (sp)
-        {
-            sp.sortingOrder = 0;
-        }
+        // SpriteRenderer sp = View.GetComponent<SpriteRenderer>();
+        // if (sp)
+        // {
+        //     sp.sortingOrder = 0;
+        // }
 
+        View.SpriteRenderer.sortingOrder = 0;
     }
 
     internal void ShowAppearAnimation()
     {
         if (View == null) return;
 
-        Vector3 scale = View.localScale;
-        View.localScale = Vector3.one * 0.1f;
-        View.DOScale(scale, 0.1f);
+        Vector3 scale = View.Transform.localScale;
+        View.Transform.localScale = Vector3.one * 0.1f;
+        View.Transform.DOScale(scale, 0.1f);
     }
 
     internal virtual bool IsSameType(Item other)
@@ -96,31 +87,31 @@ public class Item
 
     internal virtual void ExplodeView()
     {
-        if (View)
+        if (View != null)
         {
-            View.DOScale(0.1f, 0.1f).OnComplete(
+            View.Transform.DOScale(0.1f, 0.1f).OnComplete(
                 () =>
                 {
-                    GameObject.Destroy(View.gameObject);
+                    // GameObject.Destroy(View.gameObject);
+                    View.Disable();
                     View = null;
                 }
-                );
+            );
         }
     }
-
-
+    
 
     internal void AnimateForHint()
     {
-        if (View)
+        if (View != null)
         {
-            View.DOPunchScale(View.localScale * 0.1f, 0.1f).SetLoops(-1);
+            View.Transform.DOPunchScale(View.Transform.localScale * 0.1f, 0.1f).SetLoops(-1);
         }
     }
 
     internal void StopAnimateForHint()
     {
-        if (View)
+        if (View != null)
         {
             View.DOKill();
         }
@@ -130,10 +121,9 @@ public class Item
     {
         Cell = null;
 
-        if (View)
-        {
-            GameObject.Destroy(View.gameObject);
-            View = null;
-        }
+        if (View == null) return;
+        //GameObject.Destroy(View.gameObject);
+        View.Disable();
+        View = null;
     }
 }

@@ -193,8 +193,8 @@ public class Board
         cell2.Free();
         cell2.Assign(item);
 
-        item.View.DOMove(cell2.transform.position, 0.3f);
-        item2.View.DOMove(cell1.transform.position, 0.3f).OnComplete(() => { if (callback != null) callback(); });
+        item.View.Transform.DOMove(cell2.transform.position, 0.3f);
+        item2.View.Transform.DOMove(cell1.transform.position, 0.3f).OnComplete(() => { if (callback != null) callback(); });
     }
 
     public List<Cell> GetHorizontalMatches(Cell cell)
@@ -670,7 +670,7 @@ public class Board
                 cell.Free();
 
                 holder.Assign(item);
-                item.View.DOMove(holder.transform.position, 0.3f);
+                item.View.Transform.DOMove(holder.transform.position, 0.3f);
             }
         }
     }

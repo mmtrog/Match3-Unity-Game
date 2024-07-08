@@ -6,18 +6,23 @@ public class NormalItem : Item
 {
     public enum eNormalType
     {
-        TYPE_ONE,
-        TYPE_TWO,
-        TYPE_THREE,
-        TYPE_FOUR,
-        TYPE_FIVE,
-        TYPE_SIX,
-        TYPE_SEVEN,
-        NO_TYPE
+        TYPE_ONE   = 0,
+        TYPE_TWO   = 1,
+        TYPE_THREE = 2,
+        TYPE_FOUR  = 3,
+        TYPE_FIVE  = 4,
+        TYPE_SIX   = 5,
+        TYPE_SEVEN = 6,
+        NO_TYPE 
     }
 
     public eNormalType ItemType;
 
+    public override void SetView()
+    {
+        View = PoolManager.Instance.SpawnItemView(ItemType);
+    }
+    
     public void SetType(eNormalType type)
     {
         ItemType = type;

@@ -7,10 +7,10 @@ public class BonusItem : Item
 {
     public enum eBonusType
     {
-        NONE,
-        HORIZONTAL,
-        VERTICAL,
-        ALL
+        NONE = -1,
+        HORIZONTAL = 0,
+        VERTICAL = 1,
+        ALL = 2,
     }
 
     public eBonusType ItemType;
@@ -18,6 +18,11 @@ public class BonusItem : Item
     public void SetType(eBonusType type)
     {
         ItemType = type;
+    }
+    
+    public override void SetView()
+    {
+        View = PoolManager.Instance.SpawnItemView(ItemType);
     }
 
     protected override string GetPrefabName()
