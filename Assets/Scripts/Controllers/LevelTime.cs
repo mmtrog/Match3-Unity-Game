@@ -19,6 +19,16 @@ public class LevelTime : LevelCondition
 
         UpdateText();
     }
+    
+    public override void Reset(float value, Text txt)
+    {
+        base.Reset(value, txt);
+
+        m_time = (int)value;
+
+        UpdateText();
+    }
+    
 
     private void Update()
     {

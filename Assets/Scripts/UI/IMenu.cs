@@ -1,6 +1,6 @@
 ﻿public interface IMenu
 {
-    void Setup(UIMainManager mngr);
+    void Setup(UIMainManager uiMngr, GameManager gameMngr);
 
     void Show();
 

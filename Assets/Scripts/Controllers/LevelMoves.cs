@@ -22,6 +22,15 @@ public class LevelMoves : LevelCondition
 
         UpdateText();
     }
+    
+    public override void Reset(float value, Text txt)
+    {
+        base.Reset(value, txt);
+
+        m_moves = (int)value;
+
+        UpdateText();
+    }
 
     private void OnMove()
     {

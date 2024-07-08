@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class NormalItem : Item
@@ -64,5 +65,13 @@ public class NormalItem : Item
         NormalItem it = other as NormalItem;
 
         return it != null && it.ItemType == this.ItemType;
+    }
+
+    internal void Reset(eNormalType itemType)
+    {
+        if (View == null) return;
+        ItemType = itemType;
+        View.SetType(itemType);
+        View.Transform.DOKill();
     }
 }

@@ -29,11 +29,10 @@ public class UIPanelGameOver : MonoBehaviour, IMenu
         this.gameObject.SetActive(false);
     }
 
-    public void Setup(UIMainManager mngr)
+    public void Setup(UIMainManager uiMngr, GameManager gameMngr)
     {
-        m_mngr = mngr;
+        m_mngr = uiMngr;  
     }
-
     public void Show()
     {
         this.gameObject.SetActive(true);

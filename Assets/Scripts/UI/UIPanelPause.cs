@@ -20,16 +20,15 @@ public class UIPanelPause : MonoBehaviour, IMenu
         if (btnClose) btnClose.onClick.RemoveAllListeners();
     }
 
-    public void Setup(UIMainManager mngr)
-    {
-        m_mngr = mngr;
-    }
-
     private void OnClickClose()
     {
         m_mngr.ShowGameMenu();
     }
 
+    public void Setup(UIMainManager uiMngr, GameManager gameMngr)
+    {
+        m_mngr = uiMngr;   
+    }
     public void Show()
     {
         this.gameObject.SetActive(true);

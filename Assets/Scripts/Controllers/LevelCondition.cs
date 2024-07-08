@@ -17,6 +17,11 @@ public class LevelCondition : MonoBehaviour
         m_txt = txt;
     }
 
+    public virtual void Reset(float value, Text txt)
+    {
+        m_txt = txt;
+    }
+    
     public virtual void Setup(float value, Text txt, GameManager mngr)
     {
         m_txt = txt;

@@ -24,11 +24,6 @@ public class UIPanelMain : MonoBehaviour, IMenu
         if (btnTimer) btnTimer.onClick.RemoveAllListeners();
     }
 
-    public void Setup(UIMainManager mngr)
-    {
-        m_mngr = mngr;
-    }
-
     private void OnClickTimer()
     {
         m_mngr.LoadLevelTimer();
@@ -39,6 +34,10 @@ public class UIPanelMain : MonoBehaviour, IMenu
         m_mngr.LoadLevelMoves();
     }
 
+    public void Setup(UIMainManager uiMngr, GameManager gameMngr)
+    {
+        m_mngr = uiMngr;   
+    }
     public void Show()
     {
         this.gameObject.SetActive(true);

@@ -20,7 +20,7 @@ public class UIMainManager : MonoBehaviour
     {
         for (int i = 0; i < m_menuList.Length; i++)
         {
-            m_menuList[i].Setup(this);
+            m_menuList[i].Setup(this, m_gameManager);
         }
     }
 

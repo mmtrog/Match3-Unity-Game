@@ -56,11 +56,9 @@ public class Cell : MonoBehaviour
 
     internal void Clear()
     {
-        if (Item != null)
-        {
-            Item.Clear();
-            Item = null;
-        }
+        if (Item == null) return;
+        Item.Clear();
+        Item = null;
     }
 
     internal bool IsSameType(Cell other)

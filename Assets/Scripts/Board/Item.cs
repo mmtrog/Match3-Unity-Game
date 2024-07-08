@@ -113,7 +113,7 @@ public class Item
     {
         if (View != null)
         {
-            View.DOKill();
+            View.Transform.DOKill();
         }
     }
 

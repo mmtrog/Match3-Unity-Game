@@ -25,6 +25,8 @@ public class Board
 
     private int m_matchMin;
 
+    private NormalItem.eNormalType[,] m_originalBoard = new NormalItem.eNormalType[0,0]; 
+    
     public Board(Transform transform, GameSettings gameSettings)
     {
         m_root = transform;
@@ -36,6 +38,8 @@ public class Board
 
         m_cells = new Cell[boardSizeX, boardSizeY];
 
+        m_originalBoard = new NormalItem.eNormalType[boardSizeX,boardSizeY]; 
+        
         CreateBoard();
     }
 
@@ -73,6 +77,35 @@ public class Board
     }
 
     private NormalItem.eNormalType[] m_types = new NormalItem.eNormalType[2];
+
+    internal void Reset()
+    {
+        for (int x = 0; x < boardSizeX; x++)
+        {
+            for (int y = 0; y < boardSizeY; y++)
+            {
+                var cell = m_cells[x, y];
+
+                if (cell.Item is NormalItem item)
+                {
+                    item.Reset(m_originalBoard[x, y]);    
+                }
+                else
+                {
+                    item = new NormalItem();
+                    
+                    item.SetType(m_originalBoard[x, y]);
+                    item.SetView();
+                    item.SetViewRoot(m_root);
+
+                    cell.Item?.Clear();
+                    cell.Free();
+                    cell.Assign(item);
+                    cell.ApplyItemPosition(true);   
+                }
+            }
+        }
+    }
     
     internal void Fill()
     {
@@ -113,9 +146,13 @@ public class Board
                         index++;
                         
                     }
-                } 
+                }
 
-                item.SetType(Utils.GetRandomNormalTypeExcept(m_types));
+                var itemType = Utils.GetRandomNormalTypeExcept(m_types);
+
+                m_originalBoard[x, y] = itemType;
+                
+                item.SetType(itemType);
                 item.SetView();
                 item.SetViewRoot(m_root);
 
@@ -289,21 +326,18 @@ public class Board
                 break;
         }
 
-        if (item != null)
+        if (cellToConvert == null)
         {
-            if (cellToConvert == null)
-            {
-                int rnd = UnityEngine.Random.Range(0, matches.Count);
-                cellToConvert = matches[rnd];
-            }
-
-            item.SetView();
-            item.SetViewRoot(m_root);
-
-            cellToConvert.Free();
-            cellToConvert.Assign(item);
-            cellToConvert.ApplyItemPosition(true);
+            int rnd = UnityEngine.Random.Range(0, matches.Count);
+            cellToConvert = matches[rnd];
         }
+
+        item.SetView();
+        item.SetViewRoot(m_root);
+
+        cellToConvert.Free();
+        cellToConvert.Assign(item);
+        cellToConvert.ApplyItemPosition(true);
     }
 
 

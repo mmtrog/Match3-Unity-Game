@@ -52,6 +52,12 @@ public class BoardController : MonoBehaviour
         FindMatchesAndCollapse();
     }
 
+    public void Restart()
+    {
+        m_board.Reset();
+        FindMatchesAndCollapse();
+    }
+
     private void OnGameStateChange(GameManager.eStateGame state)
     {
         switch (state)
