@@ -76,7 +76,7 @@ public class Board
 
     }
 
-    private NormalItem.eNormalType[] m_types = new NormalItem.eNormalType[2];
+    private NormalItem.eNormalType[] m_types = new NormalItem.eNormalType[4];
 
     internal void Reset()
     {
@@ -122,33 +122,29 @@ public class Board
 
                 index = 0;
                 
-                for (i = 0; i < 2; i++)
+                for (i = 0; i < 4; i++)
                 {
                     m_types[i] = NormalItem.eNormalType.NO_TYPE;
                 }
                 
                 if (cell.NeighbourBottom != null)
                 {
-                    NormalItem nitem = cell.NeighbourBottom.Item as NormalItem;
-                    if (nitem != null)
+                    if (cell.NeighbourBottom.Item is NormalItem nItem)
                     {
-                        m_types[index] = nitem.ItemType;
+                        m_types[index] = nItem.ItemType;
                         index++;
                     }
                 }
 
                 if (cell.NeighbourLeft != null)
                 {
-                    NormalItem nitem = cell.NeighbourLeft.Item as NormalItem;
-                    if (nitem != null)
+                    if (cell.NeighbourLeft.Item is NormalItem nItem)
                     {
-                        m_types[index] = nitem.ItemType;
-                        index++;
-                        
+                        m_types[index] = nItem.ItemType;
                     }
                 }
 
-                var itemType = Utils.GetRandomNormalTypeExcept(m_types);
+                var itemType = Utils.GetRandomExcept(m_types);
 
                 m_originalBoard[x, y] = itemType;
                 
@@ -187,19 +183,87 @@ public class Board
         }
     }
 
+    private int[] m_frequency = new int[7];
+    
 
     internal void FillGapsWithNewItems()
     {
+        int i;
+            
+        int index;
+        
+        for (i = 0; i < 7; i++)
+        {
+            m_frequency[i] = 0;
+        }
+        
         for (int x = 0; x < boardSizeX; x++)
         {
             for (int y = 0; y < boardSizeY; y++)
             {
                 Cell cell = m_cells[x, y];
-                if (!cell.IsEmpty) continue;
 
+                if (!cell.IsEmpty)
+                {
+                    if (cell.Item is NormalItem temp)
+                    {
+                        m_frequency[(int)temp.ItemType]++;   
+                    }
+                    
+                    continue;
+                }
+                
+                
                 NormalItem item = new NormalItem();
 
-                item.SetType(Utils.GetRandomNormalType());
+                index = 0;
+                
+                for (i = 0; i < 4; i++)
+                {
+                    m_types[i] = NormalItem.eNormalType.NO_TYPE;
+                }
+
+                if (cell.NeighbourBottom != null)
+                {
+                    if (cell.NeighbourBottom.Item is NormalItem nItem)
+                    {
+                        m_types[index] = nItem.ItemType;
+                        index++;
+                    }
+                }
+                
+                if (cell.NeighbourUp != null)
+                {
+                    if (cell.NeighbourUp.Item is NormalItem nItem)
+                    {
+                        m_types[index] = nItem.ItemType;
+                        index++;
+                    }
+                }
+
+                if (cell.NeighbourLeft != null)
+                {
+                    if (cell.NeighbourLeft.Item is NormalItem nItem)
+                    {
+                        m_types[index] = nItem.ItemType;
+                        index++;
+                        
+                    }
+                }
+                
+                if (cell.NeighbourRight != null)
+                {
+                    if (cell.NeighbourRight.Item is NormalItem nItem)
+                    {
+                        m_types[index] = nItem.ItemType;
+                    }
+                }
+
+                var itemType = Utils.GetRandomExcept(m_types);
+
+                m_originalBoard[x, y] = itemType;
+                
+                item.SetType(itemType);
                 item.SetView();
                 item.SetViewRoot(m_root);
 
